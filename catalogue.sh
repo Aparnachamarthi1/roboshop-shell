@@ -60,7 +60,7 @@ npm install &>>$LOGFILE
 VALIDATE $? "installing dependencies"
 
 #   give full path of catalogue.service because we are inside /app
-cp /home/centos/robotshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
+cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
 
 VALIDATE $? "copying catalogue.services"
 
