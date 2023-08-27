@@ -86,6 +86,6 @@ yum install mongodb-org-shell -y &>>$LOGFILE
 
 VALIDATE $? "installing mongo client"
 
-mongo --host MONGODB-SERVER-IPADDRESS </app/schema/user.js &>>$LOGFILE
+mongo --host 172.31.44.222 </app/schema/user.js &>>$LOGFILE
 
 VALIDATE $? "loading data into mongodb"
