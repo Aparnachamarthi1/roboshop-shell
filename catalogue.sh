@@ -13,84 +13,77 @@ Y="\e[33m"
 
 if [ $USERID -ne 0 ];
 then
-     echo -e "$R ERROR:: please run this script with root access $N"
-     exit 1
- fi    
+    echo -e "$R ERROR:: Please run this script with root access $N"
+    exit 1
+fi
 
 VALIDATE(){
     if [ $1 -ne 0 ];
-then
-    echo -e "$2 ... $R FAILURE $N"
-    exit 1
-else
-    echo -e "$2 ...$G SUCCESS $N"
-fi    
+    then
+        echo -e "$2 ... $R FAILURE $N"
+        exit 1
+    else
+        echo -e "$2 ... $G SUCCESS $N"
+    fi
 }
 
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 
-VALIDATE $? "setting up NPM Source"
+VALIDATE $? "Setting up NPM Source"
 
-yum install nodejs -y
+yum install nodejs -y &>>$LOGFILE
 
-VALIDATE $? "Installing nodeJS"
+VALIDATE $? "Installing NodeJS"
 
-# once the user is created,if you run this script 2nd time
-# this command will definetly fail
-# IMPROVEMENT: first check the user already exist or not,if not exist then create
-
+#once the user is created, if you run this script 2nd time
+# this command will defnitely fail
+# IMPROVEMENT: first check the user already exist or not, if not exist then create
 useradd roboshop &>>$LOGFILE
 
-# write a condition to check directory already exist or not
+#write a condition to check directory already exist or not
 mkdir /app &>>$LOGFILE
 
-curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
 
-VALIDATE $? "downloading the catalogue artifact"
+VALIDATE $? "downloading catalogue artifact"
 
-cd /app &>>$LOGFILE 
+cd /app &>>$LOGFILE
 
-VALIDATE $? "moving into app directory"
+VALIDATE $? "Moving into app directory"
 
 unzip /tmp/catalogue.zip &>>$LOGFILE
 
 VALIDATE $? "unzipping catalogue"
 
-npm install &>>$LOGFILE 
+npm install &>>$LOGFILE
 
-VALIDATE $? "installing dependencies"
+VALIDATE $? "Installing dependencies"
 
-#   give full path of catalogue.service because we are inside /app
+# give full path of catalogue.service because we are inside /app
+cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
 
-cp home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
-
-VALIDATE $? "copying catalogue.services"
+VALIDATE $? "copying catalogue.service"
 
 systemctl daemon-reload &>>$LOGFILE
 
-VALIDATE $? "demon reload"
+VALIDATE $? "daemon reload"
 
 systemctl enable catalogue &>>$LOGFILE
 
-VALIDATE $? "enabling catalogue"
+VALIDATE $? "Enabling Catalogue"
 
 systemctl start catalogue &>>$LOGFILE
 
-VALIDATE $? "starting catalogue"
+VALIDATE $? "Starting Catalogue"
 
-cp home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
+cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
 
-VALIDATE $? "copying mongo repo"
+VALIDATE $? "Copying mongo repo"
 
 yum install mongodb-org-shell -y &>>$LOGFILE
 
-VALIDATE $? "installing mongo client"
+VALIDATE $? "Installing mongo client"
 
-mongo --host mongodb.chamarthiaparna.online </app/schema/catalogue.js &>>$LOGFILE
+mongo --host mongodb.joindevops.online </app/schema/catalogue.js &>>$LOGFILE
 
-VALIDATE $? "loading data into mongodb"
-
-
-
-
-
+VALIDATE $? "loading catalogue data into mongodb"
