@@ -44,7 +44,7 @@ sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis.conf /etc/redis/redis.conf &>>$LOGFILE
 
 VALIDATE $? "Allowing remote connections to Redis"
 
-systemctl enable redis &>>$LOGFILE   
+systemctl enable redis &>>$LOGFILE 
 
 VALIDATE $? "Enabling Redis"
 
