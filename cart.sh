@@ -77,15 +77,3 @@ VALIDATE $? "enabling cart"
 systemctl start cart &>>$LOGFILE
 
 VALIDATE $? "starting cart"
-
-cp /home/centos/robotshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
-
-VALIDATE $? "copying mongo repo"
-
-yum install mongodb-org-shell -y &>>$LOGFILE
-
-VALIDATE $? "installing mongo client"
-
-mongo --host MONGODB-SERVER-IPADDRESS </app/schema/cart.js &>>$LOGFILE
-
-VALIDATE $? "loading data into mongodb"
