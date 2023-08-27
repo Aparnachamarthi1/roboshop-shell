@@ -79,7 +79,7 @@ yum install mysql -y &>>$LOGFILE
 
 VALIDATE $? "Installing MySQL client"
 
-mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>$LOGFILE
+mysql -h 172.31.40.88 -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>$LOGFILE
 
 VALIDATE $? "Loaded countries and cities info"
 
